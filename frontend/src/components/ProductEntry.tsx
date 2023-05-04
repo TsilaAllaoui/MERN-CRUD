@@ -7,11 +7,11 @@ function ProductEntry({product, headers}: {product: Product, headers: string[]})
     
     useEffect(() => {
         let buffer: string[] = [];
-        const entries: string[] = Object.values(product);
-        const keys: string[] = Object.keys(product);
-        for (let i=0; i<entries.length; i++)
-        if (keys[i] != "_id" && keys[i] != "__v")
-             buffer.push(entries[i])
+        headers.forEach((header: string) => {
+            const value = product[header as keyof Product];
+            buffer.push( typeof value === "string" ? value : value.toString() )
+
+        })
         setValues(buffer);
     }, [])
     
@@ -19,7 +19,7 @@ function ProductEntry({product, headers}: {product: Product, headers: string[]})
     return <tr>
         {
             values && values.map((value) => {
-                return <td key={value + product._id}>{value}</td>
+                return <td key={Math.random() + product._id}>{value}</td>
             })
         }
     </tr>
