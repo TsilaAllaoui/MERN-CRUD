@@ -10,11 +10,6 @@ const app = express();
 // Middleware
 app.use(express.json());
 
-app.use((req, res, next) => {
-  console.log(req.path);
-  next();
-});
-
 // Routes
 app.use("/products", products);
 
