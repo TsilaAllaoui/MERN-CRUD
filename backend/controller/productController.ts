@@ -1,6 +1,3 @@
-// const express = require("express");
-// const Product = require("../models/productsModel");
-// const mongoose = require("mongoose");
 import express, { RequestHandler } from "express";
 import Product from "../models/productsModel";
 import mongoose from "mongoose";

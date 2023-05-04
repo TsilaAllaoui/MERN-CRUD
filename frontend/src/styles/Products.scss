@@ -1,0 +1,35 @@
+#products {
+    padding: 0 25px;
+  h1 {
+    font-size: 25px;
+    font-weight: 500;
+  }
+  table {
+    background-color: white;
+    border-radius: 5px;
+    thead{
+        th{
+            background-color: #4542D5;
+            height: 35px;
+            min-width: 100px;
+            &:nth-child(1) {
+                border-radius: 5px 0 0 0;
+            }
+            &:last-child {
+                border-radius: 0 5px 0 0;
+            }
+        }
+        color: white;
+    }
+    tbody {
+        tr{
+            height: 35px;
+            text-align: center;
+            font-weight: 500;
+            &:nth-child(even) {
+                background-color: rgb(230, 219, 219);
+            }
+        }
+    }
+  }
+}
