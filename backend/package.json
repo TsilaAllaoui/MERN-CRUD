@@ -6,6 +6,12 @@
     "nodemon": "^2.0.22"
   },
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.ts"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/mongoose": "^5.11.97",
+    "@types/node": "^18.16.3",
+    "typescript": "^5.0.4"
   }
 }
