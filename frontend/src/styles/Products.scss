@@ -1,35 +1,75 @@
-#products {
+#container {
+  display: flex;
+  #products {
+    width: 75%;
     padding: 0 25px;
-  h1 {
-    font-size: 25px;
-    font-weight: 500;
-  }
-  table {
-    background-color: white;
-    border-radius: 5px;
-    thead{
-        th{
-            background-color: #4542D5;
-            height: 35px;
-            min-width: 120px;
-            &:nth-child(1) {
-                border-radius: 5px 0 0 0;
-            }
-            &:last-child {
-                border-radius: 0 5px 0 0;
-            }
+    display: flex;
+    flex-direction: column;
+    h1 {
+      font-size: 25px;
+      font-weight: 500;
+    }
+    table {
+      background-color: white;
+      border-radius: 5px;
+      height: max-content;
+      thead {
+        th {
+          background-color: #4542d5;
+          height: 35px;
+          min-width: 120px;
+          &:nth-child(1) {
+            border-radius: 5px 0 0 0;
+          }
+          &:last-child {
+            border-radius: 0 5px 0 0;
+          }
         }
         color: white;
-    }
-    tbody {
-        tr{
-            height: 35px;
-            text-align: center;
-            font-weight: 500;
-            &:nth-child(even) {
-                background-color: rgb(230, 219, 219);
-            }
+      }
+      tbody {
+        tr {
+          height: 35px;
+          text-align: center;
+          font-weight: 500;
+          &:nth-child(even) {
+            background-color: rgb(230, 219, 219);
+          }
         }
+      }
+    }
+  }
+  #add-container {
+    flex-grow: 1;
+    color: black;
+    form {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      margin: 25% auto;
+      .pair {
+        display: flex;
+        flex-direction: column;
+      }
+      label{
+        font-weight: 500;
+      }
+      input{
+        color: black;
+        background-color: white;
+        border-radius: 5px;
+        height: 25px;
+        width: max-content;
+      }
+      button {
+        margin-top: 10px;
+        height: 35px;
+        font-weight: 600;
+        background-color: #4542d5;
+        border-radius: 5px;
+        border: unset;
+
+      }
     }
   }
 }

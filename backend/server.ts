@@ -12,7 +12,7 @@ const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://<user>:<password>@prod
 const app = express();
 
 // Middleware
-// app.use(express.json());
+app.use(express.json());
 
 // Routes
 app.use("/products", products);

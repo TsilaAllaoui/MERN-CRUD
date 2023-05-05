@@ -2,12 +2,23 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import { Product } from "../models/products";
 import ProductEntry from "./ProductEntry";
 import "../styles/Products.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { updateProducts } from "../redux/slices/productsSlice";
+// import AddModal from "./AddModal";
 
 function Products() {
+  const products = useSelector(
+    (state: RootState) => state.products.productsList
+  );
+  const dispatch = useDispatch();
 
   const nameInput = useRef<HTMLInputElement>(null);
   const priceInput = useRef<HTMLInputElement>(null);
   const descInput = useRef<HTMLInputElement>(null);
+
+  const [addAction, setAddAction] = useState(true);
+  const [id, setId] = useState("/");
 
   const fetchDatas = () => {
     fetch("/api/products")
@@ -19,7 +30,7 @@ function Products() {
         datas.forEach((data: any) => {
           buffer.push({ ...data });
         });
-        setProducts(buffer);
+        dispatch(updateProducts(buffer));
 
         let headersBuffer: string[] = [];
         for (let key in buffer[0])
@@ -29,71 +40,48 @@ function Products() {
       .catch((error) => {
         console.log("Error: ", error);
       });
-  };
-
-  const addProduct = (e: FormEvent) => {
-    e.preventDefault();
-    
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        name: nameInput.current!.value,
-        price: priceInput.current!.value,
-        description: descInput.current!.value
-       })
-  };
-  console.log(requestOptions)
-  fetch('/api/products', requestOptions)
-      .then(response => response.json())
-      // .then(data => this.setState({ postId: data.id }));
-
-    fetchDatas();
+    console.log("After fetch: ", products);
   };
 
   useEffect(() => {
-    fetchDatas()
+    fetchDatas();
   }, []);
-
-  const [products, setProducts] = useState<Product[]>([]);
 
   const [headers, setHeaders] = useState<string[]>([]);
 
   return (
-    <div id="products">
-    <h1>Products</h1>
-    <table>
-      <thead>
-        <tr>
-          {headers &&
-            headers.map((header) => {
-              return <th key={header}>{header}</th>;
-            })}
-        </tr>
-      </thead>
-      <tbody>
-        {products &&
-          products.map((product: Product) => (
-            <ProductEntry key={product._id} product={product} headers={headers} />
-          ))}
-      </tbody>
-    </table>
-    <form onSubmit={addProduct}>
-      {
-        headers && headers.map((header) => {
-          if (header === "updatedAt" || header === "createdAt")
-            return;
-          return (
-            <div key={header}>
-              <label>{header}</label>
-              <input ref={header === "name" ? nameInput : (header === "price" ? priceInput : descInput)} 
-                type={typeof products[0][header as keyof Product] === "string" ? "text" : "number"} />
-            </div>
-          )
-        })
-      }
-     <button type="submit" className="add">Add Product</button>
-    </form>
+    <div id="container">
+      <div id="products">
+        <h1>Products</h1>
+        <table>
+          <thead>
+            <tr>
+              {headers &&
+                headers.map((header) => {
+                  return <th key={header}>{header}</th>;
+                })}
+            </tr>
+          </thead>
+          <tbody>
+            {products &&
+              products.map((product: Product) => (
+                <tr>
+                <ProductEntry
+                  key={product._id}
+                  product={product}
+                  headers={headers}
+                />
+                <td>
+                  <button onClick={() => setId("/" + product._id)}>Update</button>
+                </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
+      <div id="add-container">
+        {/* <AddModal/> */}
+      </div>
     </div>
   );
 }
