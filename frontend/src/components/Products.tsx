@@ -1,10 +1,13 @@
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Product } from "../models/products";
 import ProductEntry from "./ProductEntry";
 import "../styles/Products.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { updateProducts } from "../redux/slices/productsSlice";
+import AddModal from "./AddModal";
+import UpdateModal from "./UpdateModal";
+import { GrUpdate } from "react-icons/gr";
 // import AddModal from "./AddModal";
 
 function Products() {
@@ -12,13 +15,6 @@ function Products() {
     (state: RootState) => state.products.productsList
   );
   const dispatch = useDispatch();
-
-  const nameInput = useRef<HTMLInputElement>(null);
-  const priceInput = useRef<HTMLInputElement>(null);
-  const descInput = useRef<HTMLInputElement>(null);
-
-  const [addAction, setAddAction] = useState(true);
-  const [id, setId] = useState("/");
 
   const fetchDatas = () => {
     fetch("/api/products")
@@ -34,25 +30,50 @@ function Products() {
 
         let headersBuffer: string[] = [];
         for (let key in buffer[0])
-          if (key !== "_id" && key !== "__v") headersBuffer.push(key);
+          headersBuffer.push(key);
         setHeaders(headersBuffer);
       })
       .catch((error) => {
         console.log("Error: ", error);
       });
-    console.log("After fetch: ", products);
-  };
+    };
+  
+    const [headers, setHeaders] = useState<string[]>([]);
+    const [showUpdate, setShowUpdate] = useState(false);
+    const [showAdd , setShowAdd] = useState(false);
+    const [id, setId] = useState("");
 
   useEffect(() => {
     fetchDatas();
-  }, []);
+  }, [showAdd, showUpdate]);
 
-  const [headers, setHeaders] = useState<string[]>([]);
+  useEffect(() => {
+    if (!showUpdate)
+      setId("/");
+  }, [showUpdate]);
+
+  useEffect(() => {
+    if (!showAdd)
+      setId("/");
+  }, [showAdd]);
+
+  const showAddModal = () => {
+    setShowAdd(true);
+    setId("/");
+  };
+
+  const showUpdateModal = (id: string) => {
+    setShowUpdate(true);
+    setId("/" + id);
+  };
 
   return (
     <div id="container">
       <div id="products">
-        <h1>Products</h1>
+        <div id="head">
+          <h1>Products</h1>
+          <button onClick={showAddModal}>Add Product</button>
+        </div>
         <table>
           <thead>
             <tr>
@@ -72,16 +93,25 @@ function Products() {
                   headers={headers}
                 />
                 <td>
-                  <button onClick={() => setId("/" + product._id)}>Update</button>
+                  <GrUpdate onClick={() => showUpdateModal(product._id)} className="updateButton"/>
                 </td>
                 </tr>
               ))}
           </tbody>
         </table>
       </div>
-      <div id="add-container">
-        {/* <AddModal/> */}
-      </div>
+      {
+        !showUpdate ? null :
+        <div id="update-container">
+          <UpdateModal headers={headers} id={id} setShowUpdate={setShowUpdate}/>
+        </div>
+      }
+      {
+        !showAdd ? null :
+        <div id="add-container">
+          <AddModal headers={headers} setShowAdd={setShowAdd}/>
+        </div>
+      }
     </div>
   );
 }

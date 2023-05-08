@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { Product } from "../models/products";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { useNavigate } from "react-router-dom";
 import { updateProducts } from "../redux/slices/productsSlice";
+import { AiOutlineDelete } from "react-icons/ai";
 
 function ProductEntry({product, headers}: {product: Product, headers: string[]}) {
     
@@ -18,7 +18,6 @@ function ProductEntry({product, headers}: {product: Product, headers: string[]})
     const descInput = useRef<HTMLInputElement>(null);
     
     useEffect(() => {
-        console.log("ProductEntries: ", product);
         let buffer: string[] = [];
         headers.forEach((header: string) => {
             const value = product[header as keyof Product];
@@ -94,7 +93,7 @@ function ProductEntry({product, headers}: {product: Product, headers: string[]})
             })
         }
         <td>
-            <button onClick={deleteProduct}>Delete</button>
+            <AiOutlineDelete onClick={deleteProduct} className="deleteButton"/>
         </td>
         </>
     )

@@ -1,5 +1,22 @@
 #container {
   display: flex;
+  #head{
+    display: flex;
+    height: 75px;
+    align-items: center;
+    justify-content: space-between;
+    button{
+      height: 40px;
+      background-color: green;
+      border-radius: 5px;
+      border: unset;
+      font-weight: 600;
+      transition: background-color 500ms, border 500ms;
+      &:hover {
+        background-color: lighten($color: green, $amount: 10%);
+      }
+    }
+  }
   #products {
     width: 75%;
     padding: 0 25px;
@@ -36,39 +53,14 @@
             background-color: rgb(230, 219, 219);
           }
         }
-      }
-    }
-  }
-  #add-container {
-    flex-grow: 1;
-    color: black;
-    form {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      margin: 25% auto;
-      .pair {
-        display: flex;
-        flex-direction: column;
-      }
-      label{
-        font-weight: 500;
-      }
-      input{
-        color: black;
-        background-color: white;
-        border-radius: 5px;
-        height: 25px;
-        width: max-content;
-      }
-      button {
-        margin-top: 10px;
-        height: 35px;
-        font-weight: 600;
-        background-color: #4542d5;
-        border-radius: 5px;
-        border: unset;
-
+        .deleteButton {
+          height: 35px;
+          width: 30px;
+        }
+        .updateButton {
+          height: 35px;
+          width: 25px;
+        }
       }
     }
   }

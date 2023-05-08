@@ -1,12 +1,14 @@
 import { FormEvent, useRef, useState } from "react";
 import "../styles/AddModal.scss";
 
-function AddModal({
+function UpdateModal({
   headers,
-  setShowAdd,
+  id,
+  setShowUpdate,
 }: {
   headers: string[];
-  setShowAdd: (value: boolean) => void;
+  id: string;
+  setShowUpdate: (value: boolean) => void;
 }) {
   const [error, setError] = useState("");
 
@@ -22,17 +24,21 @@ function AddModal({
     const inputs = modal.current!.querySelectorAll("input");
     inputs.forEach((input) => {
       if (input.value !== "") body[input.name] = input.value;
+      // body["updatedAt"] = Date.now().toString();
     });
 
     requestOptions = {
-      method: "POST",
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     };
 
-    fetch("/api/products/", requestOptions).then((response) => {
-      console.log("Product added");
-      setShowAdd(false);
+    console.log(body);
+    console.log(id);
+
+    fetch("/api/products" + id, requestOptions).then((response) => {
+      console.log("Product updated");
+      setShowUpdate(false);
       return response.json();
     });
   };
@@ -41,13 +47,13 @@ function AddModal({
     <div id="add-container">
       <div id="container">
         <form onSubmit={action} ref={modal}>
-          <button id="close" onClick={() => setShowAdd(false)}>
-            X
-          </button>
-          <h1>Add Product</h1>
+        <button id="close" onClick={() => setShowUpdate(false)}>
+          X
+        </button>
+          <h1>Update Product</h1>
           {headers &&
             headers.map((_header) => {
-              if (_header === "updatedAt" || _header === "createdAt" || _header === "_id" || _header == "__v") return;
+              if (_header === "updatedAt" || _header === "createdAt" || _header === "_id" || _header === "__v") return;
               const header = _header[0].toUpperCase() + _header.substring(1);
               return (
                 <div key={header} className="pair">
@@ -57,7 +63,7 @@ function AddModal({
               );
             })}
           <button type="submit" id="add">
-            Add Product
+            Update Product
           </button>
         </form>
         <div>{error}</div>
@@ -66,4 +72,4 @@ function AddModal({
   );
 }
 
-export default AddModal;
+export default UpdateModal;
